@@ -90,7 +90,7 @@ documentClass = (cls) ->
         name: getFullName(cls.variable)
         docstring: docstring
         parent: parent
-        staticmethods: (documentFunction(m) for m in staticmethods)
+        staticmethods: (documentFunction(m, static: true) for m in staticmethods)
         instancemethods: (documentFunction(m) for m in instancemethods)
 
     for method in doc.staticmethods
@@ -98,7 +98,7 @@ documentClass = (cls) ->
 
     return doc
 
-documentFunction = (func) ->
+documentFunction = (func, opts={}) ->
     ###
     Evaluates a function object as returned by the coffeescript parser,
     returning an object of the form:
@@ -127,8 +127,13 @@ documentFunction = (func) ->
     else
         params = []
 
+    name = getFullName(func.variable)
+
+    if opts.static
+        name = name.split('.').slice(1).join('.')
+
     doc =
-        name: getFullName(func.variable)
+        name: name
         docstring: docstring
         params: params
 
