@@ -68,7 +68,7 @@ documentClass = (cls) ->
     instancemethods = []
     for expr in cls.body.expressions
         if expr.type == 'Value'
-            for method in (n for n in expr.base.objects \
+            for method in (n for n in expr.base.properties \
                            when n.type == 'Assign' and n.value.type == 'Code')
                 if method.variable.this
                     # Method attached to `this`, i.e. the constructor
